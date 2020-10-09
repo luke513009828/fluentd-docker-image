@@ -11,16 +11,17 @@ RUN yum install ruby -y \
  && yum install which -y \
  && gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB  \
  && curl -sSL https://get.rvm.io | bash -s stable  
-#  && source /etc/profile.d/rvm.sh \
-#  && rvm -v  \
-#  && rvm install 2.5  \
-#  && ruby -v  \
-#  && gem sources --remove https://rubygems.org/  \
-#  && yum install gcc gcc-c++ make automake autoconf libtool openssl-devel jemalloc-devel gmp-devel -y  \
-#  && gem install fluentd --no-ri --no-rdoc  \
-#  && gem install fluent-plugin-kafka --no-ri --no-rdoc  \
-#  && gem install fluent-plugin-elasticsearch --no-ri --no-rdoc  \
-#  && fluentd --setup /etc/fluentd
+
+RUN source /etc/profile.d/rvm.sh 
+RUN rvm -v  
+RUN rvm install 2.5  
+RUN ruby -v  
+RUN gem sources --remove https://rubygems.org/  
+RUN yum install gcc gcc-c++ make automake autoconf libtool openssl-devel jemalloc-devel gmp-devel -y  
+RUN gem install fluentd 
+RUN gem install fluent-plugin-kafka 
+RUN gem install fluent-plugin-elasticsearch 
+RUN fluentd --setup /etc/fluentd
  
 
 # RUN apk update \
@@ -60,5 +61,5 @@ EXPOSE 24224 5140
 
 # USER fluent
 # ENTRYPOINT ["tini",  "--", "/bin/entrypoint.sh"]
-# CMD ["fluentd", "-c", "/etc/fluentd/fluent.conf"]
+CMD ["fluentd", "-c", "/etc/fluentd/fluent.conf"]
 
